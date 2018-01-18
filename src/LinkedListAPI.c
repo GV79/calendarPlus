@@ -205,7 +205,11 @@ void* deleteDataFromList(List* list, void* toBeDeleted)
                     return NULL;
                 }
 
-                list->length--;
+                if (list->length > 0)
+                {
+                    list->length--;
+                }
+
                 if (list->head->previous == NULL)
                 {
                     list->head->next->previous = NULL;

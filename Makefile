@@ -1,10 +1,18 @@
-all: list parser
+all:	icallib.so
+list:	libllist.a
+parser:	libcparse.a
 
-list: src/LinkedListAPI.c
-	gcc src/LinkedListAPI.c -Iinclude -o bin/LinkedListAPI.o -c
-	ar cr bin/libllist.a bin/LinkedListAPI.o
-parser: src/CalendarParser.c
-	gcc src/CalendarParser.c -Iinclude -o bin/CalendarParser.o -c
-	ar cr bin/libcparse.a bin/CalendarParser.o
+libllist.a:	src/LinkedListAPI.c
+	gcc -c -std=gnu11 -Iinclude src/LinkedListAPI.c -o bin/liblist.a
+
+icallib.so:	src/CalendarParser.c src/LinkedListAPI.c
+	gcc -fPIC -shared -Wall -std=gnu11 -Iinclude src/CalendarParser.c src/LinkedListAPI.c -o ./bin/icallib.so
+
+libcparse.so:	src/CalendarParser.c src/LinkedListAPI.c
+	gcc -fPIC -shared -Wall -std=gnu11 -Iinclude src/CalendarParser.c src/LinkedListAPI.c -o ./bin/icallib.so
+
+A2main:	src/A2main.c src/CalendarParser.c src/LinkedListAPI.c
+	gcc -std=gnu11 -Iinclude src/CalendarParser.c src/LinkedListAPI.c src/A2main.c -o ./bin/A2main
+
 clean:
-	rm bin/LinkedListAPI.o bin/libllist.a bin/CalendarParser.o bin/libcparse.a
+	rm -f bin/*.o bin/*.so bin/*.a

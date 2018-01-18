@@ -9,7 +9,8 @@
 #include "LinkedListAPI.h"
 
 //Error codes that indicate what went wrong during parsing
-typedef enum ers {OK, INV_FILE, INV_CAL, INV_VER, DUP_VER, INV_PRODID, DUP_PRODID, INV_EVENT, INV_CREATEDT, INV_ALARM, WRITE_ERROR, OTHER_ERROR } ICalErrorCode;
+typedef enum ers {OK, INV_FILE, INV_CAL, INV_VER, DUP_VER, INV_PRODID, DUP_PRODID, INV_EVENT, INV_CREATEDT,
+    INV_ALARM, WRITE_ERROR, OTHER_ERROR } ICalErrorCode;
 
 //Represents iCalendar Date-time
 typedef struct dt {
@@ -45,6 +46,10 @@ typedef struct evt {
 	char 		UID[1000];
 	//Event creation date-time.
     DateTime 	creationDateTime;
+    
+    //Event start date-time.
+    DateTime     startDateTime;
+    
 	//Additional event properties.  All objects in the list will be of type Property.  It may be empty.
 	List 	    properties;
 	//List of alarms associated with the event.  All objects in the list will be of type Alarm.  It may be empty.
@@ -66,7 +71,8 @@ typedef struct ical {
     
 } Calendar;
 
-
+// Function needed for C - Python interoperability
+Calendar* createSimpleCalendar(char args[4][1000]);
 
 
 /** Function to create a Calendar object based on the contents of an iCalendar file.
